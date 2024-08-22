@@ -1,0 +1,507 @@
+{
+	"info": {
+		"_postman_id": "9a6cdd8f-67ea-4411-a7dc-c090254ae864",
+		"name": "Subscription Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12977091"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.request.method !== 'GET') {\r",
+									"    if(pm.environment.get('XSRF-TOKEN')) {\r",
+									"        pm.request.headers.upsert({\r",
+									"            key: 'x-xsrf-token',\r",
+									"            value: pm.environment.get('XSRF-TOKEN'),\r",
+									"        });\r",
+									"    } else{ \r",
+									"        let csrfRequestUrl = 'localhost/sanctum/csrf-cookie';\r",
+									"        pm.sendRequest(csrfRequestUrl, function(err, res, {cookies}) {\r",
+									"            let xsrfCookie = cookies.one('XSRF-TOKEN');\r",
+									"            if (xsrfCookie) {\r",
+									"                let xsrfToken = decodeURIComponent(xsrfCookie['value']);\r",
+									"                pm.request.headers.upsert({\r",
+									"                    key: 'x-xsrf-token',\r",
+									"                    value: xsrfToken,\r",
+									"                });                \r",
+									"                pm.environment.set('XSRF-TOKEN', xsrfToken);\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"johndoe@domain.com\",\r\n    \"name\": \"John Doe\",\r\n    \"password\": \"12345678\",\r\n    \"payment_provider\": \"stripe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/register",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.request.method !== 'GET') {\r",
+									"    if(pm.environment.get('XSRF-TOKEN')) {\r",
+									"        pm.request.headers.upsert({\r",
+									"            key: 'x-xsrf-token',\r",
+									"            value: pm.environment.get('XSRF-TOKEN'),\r",
+									"        });\r",
+									"    } else{ \r",
+									"        let csrfRequestUrl = 'localhost/sanctum/csrf-cookie';\r",
+									"        pm.sendRequest(csrfRequestUrl, function(err, res, {cookies}) {\r",
+									"            let xsrfCookie = cookies.one('XSRF-TOKEN');\r",
+									"            if (xsrfCookie) {\r",
+									"                let xsrfToken = decodeURIComponent(xsrfCookie['value']);\r",
+									"                pm.request.headers.upsert({\r",
+									"                    key: 'x-xsrf-token',\r",
+									"                    value: xsrfToken,\r",
+									"                });                \r",
+									"                pm.environment.set('XSRF-TOKEN', xsrfToken);\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"johndoe@domain.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/login",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscription",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.request.method !== 'GET') {\r",
+									"    if(pm.environment.get('XSRF-TOKEN')) {\r",
+									"        pm.request.headers.upsert({\r",
+									"            key: 'x-xsrf-token',\r",
+									"            value: pm.environment.get('XSRF-TOKEN'),\r",
+									"        });\r",
+									"    } else{ \r",
+									"        let csrfRequestUrl = 'localhost/sanctum/csrf-cookie';\r",
+									"        pm.sendRequest(csrfRequestUrl, function(err, res, {cookies}) {\r",
+									"            let xsrfCookie = cookies.one('XSRF-TOKEN');\r",
+									"            if (xsrfCookie) {\r",
+									"                let xsrfToken = decodeURIComponent(xsrfCookie['value']);\r",
+									"                pm.request.headers.upsert({\r",
+									"                    key: 'x-xsrf-token',\r",
+									"                    value: xsrfToken,\r",
+									"                });                \r",
+									"                pm.environment.set('XSRF-TOKEN', xsrfToken);\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"renewal_at\": \"2024-08-23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/user/1/subscription",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"user",
+								"1",
+								"subscription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.request.method !== 'GET') {\r",
+									"    if(pm.environment.get('XSRF-TOKEN')) {\r",
+									"        pm.request.headers.upsert({\r",
+									"            key: 'x-xsrf-token',\r",
+									"            value: pm.environment.get('XSRF-TOKEN'),\r",
+									"        });\r",
+									"    } else{ \r",
+									"        let csrfRequestUrl = 'localhost/sanctum/csrf-cookie';\r",
+									"        pm.sendRequest(csrfRequestUrl, function(err, res, {cookies}) {\r",
+									"            let xsrfCookie = cookies.one('XSRF-TOKEN');\r",
+									"            if (xsrfCookie) {\r",
+									"                let xsrfToken = decodeURIComponent(xsrfCookie['value']);\r",
+									"                pm.request.headers.upsert({\r",
+									"                    key: 'x-xsrf-token',\r",
+									"                    value: xsrfToken,\r",
+									"                });                \r",
+									"                pm.environment.set('XSRF-TOKEN', xsrfToken);\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"renewal_at\": \"2024-08-21\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/user/1/subscription/1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"user",
+								"1",
+								"subscription",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.request.method !== 'GET') {\r",
+									"    if(pm.environment.get('XSRF-TOKEN')) {\r",
+									"        pm.request.headers.upsert({\r",
+									"            key: 'x-xsrf-token',\r",
+									"            value: pm.environment.get('XSRF-TOKEN'),\r",
+									"        });\r",
+									"    } else{ \r",
+									"        let csrfRequestUrl = 'localhost/sanctum/csrf-cookie';\r",
+									"        pm.sendRequest(csrfRequestUrl, function(err, res, {cookies}) {\r",
+									"            let xsrfCookie = cookies.one('XSRF-TOKEN');\r",
+									"            if (xsrfCookie) {\r",
+									"                let xsrfToken = decodeURIComponent(xsrfCookie['value']);\r",
+									"                pm.request.headers.upsert({\r",
+									"                    key: 'x-xsrf-token',\r",
+									"                    value: xsrfToken,\r",
+									"                });                \r",
+									"                pm.environment.set('XSRF-TOKEN', xsrfToken);\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost/user/1/subscription/1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"user",
+								"1",
+								"subscription",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"if (pm.request.method !== 'GET') {\r",
+									"    if(pm.environment.get('XSRF-TOKEN')) {\r",
+									"        pm.request.headers.upsert({\r",
+									"            key: 'x-xsrf-token',\r",
+									"            value: pm.environment.get('XSRF-TOKEN'),\r",
+									"        });\r",
+									"    } else{ \r",
+									"        let csrfRequestUrl = 'localhost/sanctum/csrf-cookie';\r",
+									"        pm.sendRequest(csrfRequestUrl, function(err, res, {cookies}) {\r",
+									"            let xsrfCookie = cookies.one('XSRF-TOKEN');\r",
+									"            if (xsrfCookie) {\r",
+									"                let xsrfToken = decodeURIComponent(xsrfCookie['value']);\r",
+									"                pm.request.headers.upsert({\r",
+									"                    key: 'x-xsrf-token',\r",
+									"                    value: xsrfToken,\r",
+									"                });                \r",
+									"                pm.environment.set('XSRF-TOKEN', xsrfToken);\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subscription_id\": 1,\r\n    \"price\": 100.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/user/1/transaction",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"user",
+								"1",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Show",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.request.method !== 'GET') {\r",
+									"    if(pm.environment.get('XSRF-TOKEN')) {\r",
+									"        pm.request.headers.upsert({\r",
+									"            key: 'x-xsrf-token',\r",
+									"            value: pm.environment.get('XSRF-TOKEN'),\r",
+									"        });\r",
+									"    } else{ \r",
+									"        let csrfRequestUrl = 'localhost/sanctum/csrf-cookie';\r",
+									"        pm.sendRequest(csrfRequestUrl, function(err, res, {cookies}) {\r",
+									"            let xsrfCookie = cookies.one('XSRF-TOKEN');\r",
+									"            if (xsrfCookie) {\r",
+									"                let xsrfToken = decodeURIComponent(xsrfCookie['value']);\r",
+									"                pm.request.headers.upsert({\r",
+									"                    key: 'x-xsrf-token',\r",
+									"                    value: xsrfToken,\r",
+									"                });                \r",
+									"                pm.environment.set('XSRF-TOKEN', xsrfToken);\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost/user/1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
